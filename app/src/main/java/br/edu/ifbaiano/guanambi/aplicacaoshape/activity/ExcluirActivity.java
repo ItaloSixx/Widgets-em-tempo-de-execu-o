@@ -46,8 +46,10 @@ public class ExcluirActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sp.edit();
                     editor.remove("email");
                     editor.apply();
-                    Intent redirecionar = new Intent(ExcluirActivity.this, MainActivity.class);
-                    startActivity(redirecionar);
+                    Intent intent = new Intent(ExcluirActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                 }else{
                     Toast.makeText(ExcluirActivity.this, "Erro ao excluir", Toast.LENGTH_SHORT).show();
                 }

@@ -38,6 +38,10 @@ import br.edu.ifbaiano.guanambi.aplicacaoshape.model.User;
             btnEntrar = findViewById(R.id.btnCad);
             textViewCada = findViewById(R.id.tvCadastrar);
 
+            //limpar o preferences quando o app for instalado
+            SharedPreferences sp = getSharedPreferences("appLogin", Context.MODE_PRIVATE);
+            sp.edit().clear().apply();
+
             btnEntrar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
