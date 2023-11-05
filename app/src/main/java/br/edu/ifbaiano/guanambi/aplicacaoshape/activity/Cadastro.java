@@ -33,6 +33,7 @@ public class Cadastro extends AppCompatActivity {
         senha = findViewById(R.id.edtSenhaCad);
         btnCad = findViewById(R.id.btnCad);
 
+
         btnCad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,26 +41,27 @@ public class Cadastro extends AppCompatActivity {
                 String nome_ = nome.getText().toString();
                 String senha_ = senha.getText().toString();
 
-                if(email.getText().toString().isEmpty()){
+                if (email.getText().toString().isEmpty()) {
                     email.setError("Campo obrigatorio");
-                }
-
-                User dados = new User(email_, nome_, senha_);
-
-                uDao = new UserDAO(getApplicationContext(), dados);
-
-                if(uDao.inserir()) {
-
-                    SharedPreferences sp = getSharedPreferences("appLogin",
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("email",email.getText().toString());
-                    editor.commit();
-
-                    Intent it = new Intent(Cadastro.this, ActivityPrincipal.class);
-                    startActivity(it);
                 } else {
-                    Toast.makeText(Cadastro.this, "Erro ao realizar o cadastro", Toast.LENGTH_SHORT).show();
+
+                    User dados = new User(email_, nome_, senha_);
+
+                    uDao = new UserDAO(getApplicationContext(), dados);
+
+                    if (uDao.inserir()) {
+
+//                    SharedPreferences sp = getSharedPreferences("appLogin",
+//                            Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sp.edit();
+//                    editor.putString("email",email.getText().toString());
+//                    editor.commit();
+
+                        Intent it = new Intent(Cadastro.this, MainActivity.class);
+                        startActivity(it);
+                    } else {
+                        Toast.makeText(Cadastro.this, "Erro ao realizar o cadastro", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

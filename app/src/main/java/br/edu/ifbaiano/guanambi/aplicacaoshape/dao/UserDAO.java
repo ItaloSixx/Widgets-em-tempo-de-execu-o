@@ -4,8 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
+import android.util.Log;
 
 import br.edu.ifbaiano.guanambi.aplicacaoshape.helper.DBHelper;
 import br.edu.ifbaiano.guanambi.aplicacaoshape.model.User;
@@ -53,25 +52,39 @@ public class UserDAO {
         return false;
     }
 
+
+
 //Metodo de atualizar os dados no banco de dados
     public boolean update(){
 
         SQLiteDatabase dbLite = this.db.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("nome",this.user.getName());
-        cv.put("senha", this.user.getPassword());
-        cv.put("email", this.user.getMail());
+        if(!user.getName().isEmpty())
+            cv.put("nome", user.getName());
+        if(!user.getPassword().isEmpty())
+            cv.put("senha", user.getPassword());
+        if (cv.size() == 0)
+            return false;
 
-        //Para update eh importante lembrar de colocar a clausura WHERE para n atualizar pra todos
-        //Essa ( String[]{this.user.getMail()}) serve para alterar oq tem na clausura WHERE "?"
-        long ret = dbLite.update("user", cv,"email = ?", new String[]{this.user.getMail()} );
-        if (ret > 0){
-            return true;
-        }
-        return false;
+        // Importante lembrar de colocar a cláusula WHERE para não atualizar para todos
+        // Esta (String[]{user.getMail()}) serve para alterar o que está na cláusula WHERE "?"
+        long ret = dbLite.update("user", cv, "email = ?", new String[]{user.getMail()});
+        dbLite.close(); // Feche a conexão após a atualização
+
+        return ret > 0;
     }
 
+    public void updateUserDetails(String email, String name, String password) {
+        this.user.setMail(email);
+        this.user.setName(name);
+        this.user.setPassword(password);
+    }
+
+
+
     public boolean delete(){
+        Log.d("Email", "Email a ser deletado: " + this.user.getMail());
+
 
         SQLiteDatabase dbLite = this.db.getWritableDatabase();
         //Da mesma forma que o update, o delete funcionando, lembrando de filtrar quem queremos chamar para excluir

@@ -7,30 +7,19 @@
     android:background="@drawable/backlogin"
     tools:context=".activity.MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="118dp"
-        android:layout_height="127dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_insert_emoticon_24" />
-
 
     <EditText
         android:id="@+id/edtNomeCad"
         style="@style/estiloedt"
 
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="34dp"
         android:drawableRight="@android:drawable/ic_menu_myplaces"
         android:hint="Nome"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
         android:id="@+id/edtEmailCad"
@@ -71,5 +60,15 @@
         app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtSenhaCad"></androidx.appcompat.widget.AppCompatButton>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="141dp"
+        android:layout_height="177dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/png_clipart_minimalism_graphic_design_graphy_venus_angle_text__1_" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

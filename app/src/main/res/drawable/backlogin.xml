@@ -5,9 +5,12 @@
     <solid android:color="@android:color/black"></solid>
 
 
-    <gradient android:startColor="@android:color/holo_green_dark"
-        android:centerColor="@android:color/white"
-        android:angle="45"></gradient>
+    <gradient android:startColor="@android:color/secondary_text_light"
+        android:centerColor="@android:color/secondary_text_dark_nodisable"
+        android:angle="45"
+        android:endColor="@android:color/darker_gray"
+        ></gradient>
+
 
 <!--    android:endColor="@android:color/holo_red_dark"-->
 

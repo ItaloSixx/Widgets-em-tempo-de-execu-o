@@ -21,60 +21,62 @@ import br.edu.ifbaiano.guanambi.aplicacaoshape.R;
 import br.edu.ifbaiano.guanambi.aplicacaoshape.dao.UserDAO;
 import br.edu.ifbaiano.guanambi.aplicacaoshape.model.User;
 
-public class MainActivity extends AppCompatActivity {
+    public class MainActivity extends AppCompatActivity {
 
-    EditText edtEmail, edtSenha;
-    Button btnEntrar;
-    UserDAO uDao;
+        EditText edtEmail, edtSenha;
+        Button btnEntrar;
+        UserDAO uDao;
 
-    TextView textViewCada;
-    ProgressBar pb;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        TextView textViewCada;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
+            edtEmail = findViewById(R.id.edtEmail);
+            edtSenha = findViewById(R.id.edtSenha);
+            btnEntrar = findViewById(R.id.btnCad);
+            textViewCada = findViewById(R.id.tvCadastrar);
 
-        edtEmail = findViewById(R.id.edtEmail);
-        edtSenha = findViewById(R.id.edtSenha);
-        btnEntrar = findViewById(R.id.btnCad);
-        textViewCada = findViewById(R.id.tvCadastrar);
+            btnEntrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences sp = getSharedPreferences("appLogin", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("email", edtEmail.getText().toString());
+                    editor.apply();
 
+                    uDao = new UserDAO(getApplicationContext(), new User(edtEmail.getText().toString(), edtSenha.getText().toString()));
 
-        btnEntrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//Utilizando preferências para armazenar informações rápidas e que podem ser 'perdidas'.
-                SharedPreferences sp = getSharedPreferences("appLogin",
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("email",edtEmail.getText().toString());
-                editor.commit();
-
-                uDao = new UserDAO(getApplicationContext(),
-                        new User(edtEmail.getText().toString(),
-                                edtSenha.getText().toString()));
-
-                if (uDao.verificarEmailESenha()){
-                    Intent it = new Intent(MainActivity.this, ActivityPrincipal.class);
-                    // it.putExtra("email", edtEmail.getText().toString());
-                    startActivity(it);
-                }else{
-                    Toast.makeText(MainActivity.this,
-                            "Dados Incorretos", Toast.LENGTH_SHORT).show();
+                    if (uDao.verificarEmailESenha()){
+                        Intent it = new Intent(MainActivity.this, ActivityPrincipal.class);
+                        startActivity(it);
+                        finish();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Dados Incorretos", Toast.LENGTH_SHORT).show();
+                    }
                 }
+            });
 
+            if (isLogado()){
+                Intent redirecionar = new Intent(MainActivity.this, ActivityPrincipal.class);
+                startActivity(redirecionar);
+                finish();
+            }else{
+                Intent redirecionar = new Intent(MainActivity.this, MainActivity.class);
             }
-        });
 
-        textViewCada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(MainActivity.this, Cadastro.class);
-                startActivity(it);
-            }
-        });
+            textViewCada.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent it = new Intent(MainActivity.this, Cadastro.class);
+                    startActivity(it);
+                }
+            });
+        }
 
-
+        private boolean isLogado(){
+            SharedPreferences sp = getSharedPreferences("appLogin", Context.MODE_PRIVATE);
+            return sp.contains("email");
+        }
     }
-}
