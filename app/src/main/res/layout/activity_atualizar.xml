@@ -24,6 +24,7 @@
         style="@style/estiloedt"
         android:layout_marginTop="48dp"
         android:hint="Nome"
+        android:drawableRight="@android:drawable/ic_menu_myplaces"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"

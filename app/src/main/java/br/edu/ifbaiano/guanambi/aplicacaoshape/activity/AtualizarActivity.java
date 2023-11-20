@@ -38,7 +38,10 @@ public class AtualizarActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("appLogin",
                 Context.MODE_PRIVATE);
         String email = sp.getString("email","");
+//        String nome = sp.getString("nome","");
         txtemail.setText(email);
+//        edtNome.setText(nome);
+//        edtSenha.setText(senha);
         btnAtualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

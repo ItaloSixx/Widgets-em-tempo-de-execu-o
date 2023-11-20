@@ -1,14 +1,20 @@
 package br.edu.ifbaiano.guanambi.aplicacaoshape.activity;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import br.edu.ifbaiano.guanambi.aplicacaoshape.R;
 import br.edu.ifbaiano.guanambi.aplicacaoshape.dao.UserDAO;
@@ -20,6 +26,7 @@ public class ActivityPrincipal extends AppCompatActivity {
     Button btnSair;
     Button btnAtualizar;
     Button btnExcluir;
+    Button btnHabilidads;
     TextView txtNome;
 
     @Override
@@ -32,7 +39,7 @@ public class ActivityPrincipal extends AppCompatActivity {
         btnSair = findViewById(R.id.btnSair);
         btnAtualizar = findViewById(R.id.btnAtualizar);
         btnExcluir = findViewById(R.id.btnExcluir);
-
+        btnHabilidads = findViewById(R.id.btnHabilidades);
 
         SharedPreferences sp = getSharedPreferences("appLogin",
                 Context.MODE_PRIVATE);
@@ -82,9 +89,39 @@ public class ActivityPrincipal extends AppCompatActivity {
             }
         });
 
+        btnHabilidads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent redirecionar = new Intent(ActivityPrincipal.this, DinamicaActivitiy.class);
+                startActivity(redirecionar);
+            }
+        });
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
-
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.op1:
+                Intent redirecionar = new Intent(this, ListarActivity.class);
+                startActivity(redirecionar);
+                break;
+            case R.id.op2:
+                redirecionar = new Intent(ActivityPrincipal.this, AtualizarActivity.class);
+                startActivity(redirecionar);
+                break;
+            case R.id.op3:
+                redirecionar = new Intent(ActivityPrincipal.this, ExcluirActivity.class);
+                startActivity(redirecionar);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

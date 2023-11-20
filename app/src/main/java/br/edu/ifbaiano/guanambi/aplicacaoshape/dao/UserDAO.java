@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import br.edu.ifbaiano.guanambi.aplicacaoshape.helper.DBHelper;
 import br.edu.ifbaiano.guanambi.aplicacaoshape.model.User;
 
@@ -99,59 +101,59 @@ public class UserDAO {
 
     public User obterUserByEmail(){
 
+            SQLiteDatabase dbLite = this.db.getReadableDatabase();
+            String sql = "Select * From user where email = ?; ";
+            Cursor c = dbLite.rawQuery(sql,new String[]{this.user.getMail()});
+        try {
+                if (c != null && c.moveToFirst()) { //se moveToFirst() retornar "true" indica pelo menos um resultado.
+                    this.user.setMail(c.getString(c.getColumnIndexOrThrow("email")));  //Sobre essa forma de passar os dados pode-se usar em vez de decorar os indices
+                    this.user.setPassword(c.getString(c.getColumnIndexOrThrow("senha"))); //pode se fazer automaticamente usando o getColumnIndexOrthrow e capiturar o indice
+                    this.user.setName(c.getString(c.getColumnIndexOrThrow("nome")));   //this.user.setMail(c.getString(c.getColumnIndexOrThrow("email")));
+                } else {                                            // E para fazer manualmente, segue-se assim: this.user.setMail(c.getString(0)); decorando incide de cada coluna
+                    //o cursor vazio, sem resultados
+                    //lanço uma exeção
+                    throw new RuntimeException("Nenhum usuário encontrado com o email fornecido");
+                }
+            }   finally {
+            if (c != null){
+                c.close(); //fecho o cursor para evitar vazar dados
+            }
+        }
+            return this.user;
+    }
+
+
+    public Cursor listarUsers(){
+
         SQLiteDatabase dbLite = this.db.getReadableDatabase();
-        String sql = "Select * From user where email = ?; ";
-        Cursor c = dbLite.rawQuery(sql,new String[]{this.user.getMail()});
+
+        String sql = "SELECT email as _id, nome, senha From user;";
+        Cursor c = dbLite.rawQuery(sql,null);
+
         if(c != null){
             c.moveToFirst();
         }
-        //Sobre essa forma de passar os dados pode-se usar em vez de decorar os indices
-        // , pode se fazer automaticamente usando o getColumnIndexOrthrow e capitura o indice
-//        this.user.setMail(c.getString(c.getColumnIndexOrThrow("email")));
 
-        // E para fazer manualmente, segue-se assim,   this.user.setMail(c.getString(0)); decorando incide de cada coluna
-        this.user.setMail(c.getString(c.getColumnIndexOrThrow("email")));
-        this.user.setPassword(c.getString(c.getColumnIndexOrThrow("senha")));
-        this.user.setName(c.getString(c.getColumnIndexOrThrow("nome")));
-
-        return this.user;
-
+        return c;
     }
 
-//PROXIMA AULA
-//PROXIMA AULA
-//    private Cursor listarUsers(){
-//
-//        SQLiteDatabase dbLite = this.db.getReadableDatabase();
-//
-//        String sql = "SELECT id as _id, nome From user;";
-//        Cursor c = dbLite.rawQuery(sql,null);
-//
-//        if(c != null){
-//            c.moveToFirst();
-//        }
-//
-//        return c;
-//    }
-//PROXIMA AULA
-//PROXIMA AULA
-//    public ArrayList<User> listarUsersArray(){
-//
-//        ArrayList<User> list = new ArrayList<>();
-//
-//        Cursor c = this.listarUsers();
-//
-//        while (!c.isAfterLast()){
-//            User u = new User(
-//                    c.getString(0),
-//                    c.getString(2),
-//                    c.getString(1)
-//            );
-//            list.add(u);
-//
-//        }
-//
-//        return list;
-//    }
+    public ArrayList<User> listarUsersArray(){
+
+        ArrayList<User> list = new ArrayList<>();
+
+        Cursor c = this.listarUsers();
+
+        while (!c.isAfterLast()){
+            User u = new User(
+                    c.getString(0),
+                    c.getString(2),
+                    c.getString(1)
+            );
+            list.add(u);
+
+        }
+
+        return list;
+    }
 
 }
